@@ -1,0 +1,125 @@
+Bank Management System(SQL commands)
+
+This database consists of 6 tables where some tables are related to one other.
+
+Creation of tables:
+
+-- Customers Table
+CREATE TABLE customers (
+    customerID INT PRIMARY KEY,
+    firstname VARCHAR(255) NOT NULL,
+    lastname VARCHAR(255) NOT NULL,
+    address VARCHAR(255),
+    phone VARCHAR(30),
+    email VARCHAR(255)
+);
+
+-- Accounts Table
+CREATE TABLE accounts (
+    accountID INT PRIMARY KEY,
+    customerID INT,
+    accounttype VARCHAR(255) NOT NULL,
+    balance DECIMAL(15,2) NOT NULL,
+    dateopened DATE,
+    FOREIGN KEY (customerID) REFERENCES customers(customerID)
+);
+
+-- Transactions Table
+CREATE TABLE transactions (
+    transactionID INT PRIMARY KEY,
+    accountID INT,
+    transactiontype VARCHAR(50) NOT NULL,
+    amount DECIMAL(15,2) NOT NULL,
+    transactiondate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (accountID) REFERENCES accounts(accountID)
+);
+
+-- Branches Table
+CREATE TABLE branches (
+    branchID INT PRIMARY KEY,
+    branchname VARCHAR(255) NOT NULL,
+    location VARCHAR(255)
+);
+
+-- Employees Table
+CREATE TABLE employees (
+    employeeID INT PRIMARY KEY,
+    firstname VARCHAR(255) NOT NULL,
+    lastname VARCHAR(255) NOT NULL,
+    position VARCHAR(100) NOT NULL,
+    branchID INT,
+    FOREIGN KEY (branchID) REFERENCES branches(branchID)
+);
+
+-- Loans Table
+CREATE TABLE loans (
+    loanID INT PRIMARY KEY,
+    customerID INT,
+    accountID INT,
+    amount DECIMAL(15,2) NOT NULL,
+    interestRate DECIMAL(5,2),
+    startDate DATE,
+    endDate DATE,
+    FOREIGN KEY (customerID) REFERENCES customers(customerID),
+    FOREIGN KEY (accountID) REFERENCES accounts(accountID)
+);
+
+
+Insertion of data into these tables:
+
+-- Insert values into customers table
+INSERT INTO customers (customerID, firstname, lastname, address, phone, email)
+VALUES 
+    (1, 'John', 'Doe', '123 Main St, City', '123-456-7890', 'john.doe@example.com'),
+    (2, 'Jane', 'Smith', '456 Elm St, Town', '456-789-0123', 'jane.smith@example.com'),
+    (3, 'Alice', 'Johnson', '789 Oak St, Village', '789-012-3456', 'alice.johnson@example.com'),
+    (4, 'Bob', 'Brown', '012 Pine St, Country', '012-345-6789', 'bob.brown@example.com'),
+    (5, 'Emma', 'Lee', '345 Maple St, Suburb', '345-678-9012', 'emma.lee@example.com');
+
+-- Insert values into accounts table
+INSERT INTO accounts (accountID, customerID, accounttype, balance, dateopened)
+VALUES 
+    (1, 1, 'Savings', 5000.00, '2024-01-01'),
+    (2, 2, 'Current', 1000.00, '2024-02-01'),
+    (3, 3, 'Current', 7500.00, '2024-03-01'),
+    (4, 4, 'Savings', 2000.00, '2024-04-01'),
+    (5, 5, 'Savings', 3000.00, '2024-05-01');
+
+-- Insert values into transactions table
+INSERT INTO transactions (transactionID, accountID, transactiontype, amount, transactiondate)
+VALUES 
+    (1, 1, 'Deposit', 1000.00, '2024-01-05'),
+    (2, 2, 'Withdrawal', 500.00, '2024-02-10'),
+    (3, 3, 'Deposit', 2000.00, '2024-03-15'),
+    (4, 4, 'Withdrawal', 1000.00, '2024-04-20'),
+    (5, 5, 'Deposit', 1500.00, '2024-05-25');
+
+-- Insert values into branches table
+INSERT INTO branches (branchID, branchname, location)
+VALUES 
+    (1, 'Main Branch', '123 Main St, City'),
+    (2, 'Town Branch', '456 Elm St, Town'),
+    (3, 'Village Branch', '789 Oak St, Village'),
+    (4, 'Country Branch', '012 Pine St, Country'),
+    (5, 'Suburb Branch', '345 Maple St, Suburb');
+
+-- Insert values into employees table
+INSERT INTO employees (employeeID, firstname, lastname, position, branchID)
+VALUES 
+    (1, 'Michael', 'Johnson', 'Manager', 1),
+    (2, 'Emily', 'Brown', 'Teller', 2),
+    (3, 'David', 'Smith', 'Loan Officer', 3),
+    (4, 'Jennifer', 'Jones', 'Teller', 4),
+    (5, 'Andrew', 'Davis', 'Financial Advisor', 5);
+
+-- Insert values into loans table
+INSERT INTO loans (loanID, customerID, accountID, amount, interestRate, startDate, endDate)
+VALUES 
+    (1, 1, 1, 10000.00, 5.00, '2024-01-01', '2024-12-31'),
+    (2, 2, 2, 5000.00, 4.50, '2024-02-01', '2024-11-30'),
+    (3, 3, 3, 15000.00, 6.00, '2024-03-01', '2024-10-31'),
+    (4, 4, 4, 8000.00, 5.25, '2024-04-01', '2024-09-30'),
+    (5, 5, 5, 12000.00, 5.75, '2024-05-01', '2024-08-31');
+
+After inserting values intothe table we can perform various database operations like DDL,DML and also aggregate functions.
+
